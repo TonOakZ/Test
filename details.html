@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดการลา</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<h2>รายละเอียดการลา</h2>
+
+<table>
+  <tr>
+    <th>ชื่อ - นามสกุล</th>
+    <td id="fullname"></td>
+  </tr>
+  <tr>
+    <th>สังกัด/ตำแหน่ง</th>
+    <td id="affiliation"></td>
+  </tr>
+  <tr>
+    <th>อีเมล์</th>
+    <td id="email"></td>
+  </tr>
+  <tr>
+    <th>เบอร์โทรศัพท์</th>
+    <td id="phone"></td>
+  </tr>
+  <tr>
+    <th>ประเภทการลา</th>
+    <td id="leave_type"></td>
+  </tr>
+  <tr>
+    <th>สาเหตุการลา</th>
+    <td id="reason"></td>
+  </tr>
+  <tr>
+    <th>วันที่ขอลา - ถึงวันที่</th>
+    <td id="date_range"></td>
+  </tr>
+  <tr>
+    <th>สถานะ</th>
+    <td id="status"></td>
+  </tr>
+</table>
+
+<script>
+  // ดึง query string จาก URL
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+
+  // ดึงค่าต่างๆจาก query string
+  const fullname = urlParams.get('fullname');
+  const affiliation = urlParams.get('affiliation');
+  const email = urlParams.get('email');
+  const phone = urlParams.get('phone');
+  const leave_type = urlParams.get('leave_type');
+  const reason = urlParams.get('reason');
+  const start_date = urlParams.get('start_date');
+  const end_date = urlParams.get('end_date');
+  const status = urlParams.get('status');
+
+  // แสดงข้อมูลในตาราง
+  document.getElementById("fullname").innerText = fullname;
+  document.getElementById("affiliation").innerText = affiliation;
+  document.getElementById("email").innerText = email;
+  document.getElementById("phone").innerText = phone;
+  document.getElementById("leave_type").innerText = leave_type;
+  document.getElementById("reason").innerText = reason;
+  document.getElementById("date_range").innerText = `${start_date} - ${end_date}`;
+  document.getElementById("status").innerText = status;
+</script>
+
+</body>
+</html>

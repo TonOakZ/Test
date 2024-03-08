@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หน้าเว็บวันลา</title>
+  <style>
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input,
+    select {
+      margin-bottom: 10px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>หน้าเว็บวันลา</h1>
+
+  <div id="leaveFormContainer"></div>
+
+  <button id="addLeaveDayBtn" onclick="addLeaveDay()">เพิ่มวันลา</button>
+
+  <script>
+    function addLeaveDay() {
+      var leaveForm = `
+        <form id="leaveForm">
+          <label for="fullname">ชื่อ - นามสกุล:</label>
+          <input type="text" id="fullname" name="fullname" required><br>
+          
+          <label for="affiliation">สังกัด/ตำแหน่ง:</label>
+          <input type="text" id="affiliation" name="affiliation"><br>
+          
+          <label for="email">อีเมล์:</label>
+          <input type="email" id="email" name="email"><br>
+          
+          <label for="phone">เบอร์โทรศัพท์:</label>
+          <input type="tel" id="phone" name="phone" required><br>
+          
+          <label for="leave_type">ประเภทการลา:</label>
+          <select id="leave_type" name="leave_type" required>
+            <option value="ลาป่วย">ลาป่วย</option>
+            <option value="ลากิจ">ลากิจ</option>
+            <option value="พักร้อน">พักร้อน</option>
+            <option value="อื่นๆ">อื่นๆ</option>
+          </select><br>
+          
+          <label for="reason">สาเหตุการลา:</label>
+          <input type="text" id="reason" name="reason" required><br>
+          
+          <label for="date_range">วันที่ขอลา - ถึงวันที่:</label>
+          <input type="date" id="start_date" name="start_date" required>
+          <input type="date" id="end_date" name="end_date" required><br>
+          
+          <input type="hidden" id="timestamp" name="timestamp" value="<?php echo date('Y-m-d H:i:s'); ?>">
+          
+          <label for="status">สถานะ:</label>
+          <select id="status" name="status">
+            <option value="รอพิจารณา">รอพิจารณา</option>
+            <option value="อนุมัติ">อนุมัติ</option>
+            <option value="ไม่อนุมัติ">ไม่อนุมัติ</option>
+          </select><br>
+          
+          <button type="button" onclick="submitLeaveRequest()">ยืนยันการลา</button>
+        </form>
+      `;
+      
+      document.getElementById("leaveFormContainer").innerHTML += leaveForm;
+      document.getElementById("addLeaveDayBtn").style.display = 'none'; // ซ่อนปุ่ม Add Leave Day
+    }
+
+    function submitLeaveRequest() {
+      var formData = new FormData(document.getElementById("leaveForm")); // เก็บค่าข้อมูลจากฟอร์มใน FormData object
+      var xhr = new XMLHttpRequest(); // สร้าง XMLHttpRequest object
+
+      xhr.open("POST", "save_leave.php", true); // กำหนดเส้นทางและเป็นแบบ asynchronous
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) { // กรณีที่การเรียกใช้งาน XMLHttpRequest เสร็จสมบูรณ์
+          if (xhr.status === 200) { // ตรวจสอบ HTTP status code
+            // การทำงานเมื่อข้อมูลถูกบันทึกสำเร็จ
+            alert("Leave request saved successfully.");
+            document.getElementById("leaveForm").reset(); // เคลียร์ค่าในฟอร์ม
+          } else {
+            // การทำงานเมื่อพบข้อผิดพลาดในการบันทึกข้อมูล
+            alert("Error saving leave request: " + xhr.responseText);
+          }
+        }
+      };
+
+      xhr.send(formData); // ส่งข้อมูลใน FormData object ผ่าน AJAX request
+    }
+  </script>
+</body>
+</html>
